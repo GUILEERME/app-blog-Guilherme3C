@@ -1,0 +1,89 @@
+<?php
+require_once '../../setup/connect.php';
+$post = filter_input_array(INPUT_POST);
+
+// Validação do ID e dos campos obrigatórios
+if (empty($post['id']) || empty($post['title']) || empty($post['description'])) {
+    header('LOCATION: form_update.php?id=' . ($post['id'] ?? '') . '&errornull=True');
+    exit;
+}
+
+$id = $post['id'];
+unset($post['id']); // Remove o id para não entrar nos SETs dinâmicos
+
+// Ternária para o campo status
+$post['status'] = isset($post['status']) ? 1 : 0;
+
+// Slug - Gerado a partir do título com verificação de unicidade ignorando o próprio post
+$slugBase = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $post['title']));
+$slug = trim($slugBase, '-');
+
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM blogs WHERE slug = :slug AND id != :id");
+$stmt->execute([':slug' => $slug, ':id' => $id]);
+$slugCount = $stmt->fetchColumn();
+
+$counter = 1;
+while ($slugCount > 0) {
+    $slug = $slugBase . '-' . $counter;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM blogs WHERE slug = :slug AND id != :id");
+    $stmt->execute([':slug' => $slug, ':id' => $id]);
+    $slugCount = $stmt->fetchColumn();
+    $counter++;
+}
+$post['slug'] = $slug;
+
+// Upload de imagem
+$dir = "../../uploads/images/blogs/";
+if (!is_dir($dir)) {
+    mkdir($dir, 0755, true);
+}
+
+if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+    // Busca imagem antiga para apagar
+    $stmtOld = $pdo->prepare("SELECT image FROM blogs WHERE id = :id");
+    $stmtOld->execute([':id' => $id]);
+    $oldImg = $stmtOld->fetchColumn();
+
+    $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+    $baseName = pathinfo($_FILES['image']['name'], PATHINFO_FILENAME);
+    $newName = $baseName . "." . $ext;
+
+    $counter = 1;
+    while (file_exists($dir . $newName)) {
+        $newName = $baseName . '-' . $counter . "." . $ext;
+        $counter++;
+    }
+
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $dir . $newName)) {
+        if (!empty($oldImg) && file_exists($dir . $oldImg)) {
+            unlink($dir . $oldImg);
+        }
+        $post['image'] = $newName;
+    }
+} else {
+    unset($post['image']); // Se não enviou imagem nova, mantém a atual no banco
+}
+
+// Atualização Dinâmica na tabela 'blogs'
+$setFields = [];
+foreach ($post as $key => $value) {
+    $setFields[] = $key . " = :" . $key;
+}
+
+$sql = "UPDATE blogs SET " . implode(", ", $setFields) . " WHERE id = :id";
+$stmt = $pdo->prepare($sql);
+
+foreach ($post as $key => $value) {
+    $stmt->bindValue(':' . $key, $value);
+}
+$stmt->bindValue(':id', $id);
+
+$stmt->execute();
+
+if ($stmt->rowCount() !== false) {
+    header('LOCATION: index.php?updated=True');
+    exit;
+} else {
+    header('LOCATION: form_update.php?id=' . $id . '&errorupdate=True');
+    exit;
+}

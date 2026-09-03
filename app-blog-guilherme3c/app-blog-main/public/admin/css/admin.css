@@ -1,0 +1,144 @@
+:root {
+    --sidebar-bg: #343a40; /* Um tom mais escuro e moderno */
+    --sidebar-color: #c2c7d0;
+    --sidebar-hover: #212529;
+    --accent-color: #0d6efd;
+    --body-bg: #f4f6f9;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: var(--body-bg);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,.5);
+    z-index: 1040;
+    height: 65px;
+}
+
+.wrapper {
+    display: flex;
+    margin-top: 65px; /* Alinhado com a altura da navbar */
+    min-height: calc(100vh - 65px);
+}
+
+/* --- SIDEBAR --- */
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: var(--sidebar-bg) !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1030;
+}
+
+#sidebar.active { margin-left: -250px; }
+
+#sidebar .nav-link {
+    color: var(--sidebar-color) !important;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: 0.2s;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+#sidebar .nav-link:hover {
+    background-color: var(--sidebar-hover);
+    color: #fff;
+}
+
+#sidebar .nav-link.active {
+    color: #fff !important;
+    background-color: rgba(255,255,255,0.05);
+    border-left: 3px solid var(--accent-color);
+}
+
+/* Submenus da Sidebar */
+#sidebar .collapse { 
+    /* background: #1a1d20;  */
+}
+#sidebar .collapse .nav-link {
+    font-size: 0.90rem;
+    /* padding-left: 45px; */
+}
+
+/* --- CONTEÚDO --- */
+.content-wrapper {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    background-color: var(--body-bg);
+}
+
+/* --- CARDS E DASHBOARD --- */
+.card {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Badge de Status (Ponto colorido) */
+.status-dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+/* Scrollbar da Sidebar */
+#sidebar::-webkit-scrollbar { width: 5px; }
+#sidebar::-webkit-scrollbar-thumb { background: #444; }
+
+
+/* Layout Full Width */
+.content-wrapper {
+    width: 100%;
+    padding: 1.5rem 2rem !important;
+    background-color: #f4f6f9;
+}
+
+.card-full {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    width: 100%; /* Garante os 100% */
+}
+
+/* Inputs mais sutis para telas largas */
+.form-control-flat {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    background-color: #fff;
+    padding: 0.6rem 1rem;
+}
+
+.form-control-flat:focus {
+    background-color: #fff;
+    border-color: #0d6efd;
+    box-shadow: none; /* Remove a sombra azul para um look mais clean */
+}
+
+.bg-primary-subtle { background-color: #e7f1ff !important; color: #0d6efd !important; }
+.bg-secondary-subtle { background-color: #f8f9fa !important; color: #6c757d !important; }
+.bg-warning-subtle { background-color: #fff3cd !important; color: #856404 !important; }
+.extra-small { font-size: 0.7rem; }
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    #sidebar { 
+        margin-left: -250px; 
+        position: fixed; 
+        height: 100%; 
+    }
+    #sidebar.active { margin-left: 0; }
+    .content-wrapper { padding: 1rem; }
+}
