@@ -32,27 +32,18 @@
             </div>
 
         <?php endif; ?>
-        <?php if (isset($_GET['errorhash'])): ?>
-            <div class="alert alert-danger w-80 m-3" role="alert">
-                As senhas não coincidem. Por favor, tente novamente.
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($_GET['erroremail'])): ?>
-            <div class="alert alert-danger w-80 m-3" role="alert">
-                O e-mail informado já está cadastrado. Por favor, utilize outro e-mail.
-            </div>
-        <?php endif; ?>
+        
+       
 
         <?php if (isset($_GET['errorinsert'])): ?>
             <div class="alert alert-danger w-80 m-3" role="alert">
-                Ocorreu um erro ao salvar o usuário. Por favor, tente novamente.
+                Ocorreu um erro ao salvar o livro. Por favor, tente novamente.
             </div>
         <?php endif; ?>
 
         <?php if (isset($_GET['inserted'])): ?>
             <div class="alert alert-success w-80 m-3" role="alert">
-                Usuário cadastrado com sucesso!
+                Livro cadastrado com sucesso!
             </div>
         <?php endif; ?>
 
@@ -62,27 +53,16 @@
 
                 <div class="row g-4 mb-4">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold small text-muted text-uppercase text-required">*Nome Completo</label>
-                        <input type="text" name="name" class="form-control form-control-flat" placeholder="Digite o nome">
+                        <label class="form-label fw-bold small text-muted text-uppercase text-required">*Título</label>
+                        <input type="text" name="title" class="form-control form-control-flat" placeholder="Digite o título da obra">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold small text-muted text-uppercase text-required">*E-mail Principal</label>
-                        <input type="email" name="email" class="form-control form-control-flat" placeholder="exemplo@blog.com">
+                        <label class="form-label fw-bold small text-muted text-uppercase text-required">*Autor</label>
+                        <input type="text" name="autor class="form-control form-control-flat" placeholder="Digite o autor da obra">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold small text-muted text-uppercase text-required">*Nível de Permissão</label>
-
-                        <select name="id_level_users" class="form-select form-control-flat">
-                            <?php
-                            // Select de dados da tabela level_users
-                            $stmt = $pdo->prepare("Select *from level_users");
-                            $stmt->execute();
-                            foreach ($stmt as $row) {
-                                echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
-                            }
-                            ?>
-                        </select>
-
+                       <label class="form-label fw-bold small text-muted text-uppercase text-required">*ISBN</label>
+                        <input type="text" name="autor" class="form-control form-control-flat" placeholder="Digite o autor da obra">
                     </div>
                 </div>
 
