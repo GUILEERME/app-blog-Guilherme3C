@@ -66,28 +66,6 @@
                     </div>
                 </div>
 
-
-
-                <div class="row g-4 mb-4">
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold small text-muted text-uppercase text-required">*Senha de Acesso</label>
-                        <input type="password" name="pass" class="form-control form-control-flat" placeholder="••••••••">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold small text-muted text-uppercase text-required">*Confirmar Senha</label>
-                        <input type="password" name="pass_confirm" class="form-control form-control-flat" placeholder="••••••••">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold small text-muted text-uppercase text-required">Status da Conta</label>
-                        <div class="d-flex align-items-center h-100 mt-2">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="statusSwitch" name="status" checked>
-                                <label class="form-check-label ms-2" for="statusSwitch">Usuário Ativo</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row g-4 mb-4 border-bottom pb-3">
                     <div class="col-md-12">
                         <label class="form-label fw-bold small text-muted text-uppercase">Foto de Perfil</label>

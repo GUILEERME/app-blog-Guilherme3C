@@ -13,6 +13,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="blogs.php">Blogs</a>
                 </li>
+              
             </ul>
         </div>
     </div>

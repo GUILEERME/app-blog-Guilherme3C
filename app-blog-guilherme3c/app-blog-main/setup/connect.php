@@ -1,6 +1,6 @@
 <?php
 // Define a URL para links, imagens e scripts (Navegador)
-$base_url = "http://localhost/app-blog-guilherme3c/";
+$base_url = "http://localhost/app-blog-guilherme3c/app-blog-main/";  
 if (!defined('BASE_URL')) define('BASE_URL', $base_url);
 
 // Define o Caminho Físico (Servidor) para evitar erros de include

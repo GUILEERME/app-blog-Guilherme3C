@@ -7,6 +7,7 @@ if (!isset($_SESSION['email'])) {
 $raiz = dirname(__DIR__, 2); // __DIR__ é uma forma de obter o diretório atual do arquivo, e dirname(__DIR__, 2) sobe dois níveis para chegar à raiz do projeto
 include_once $raiz . '/setup/connect.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -14,9 +15,11 @@ include_once $raiz . '/setup/connect.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin | Painel</title>
-    <link rel="stylesheet" href="<?= $base_url ?>public/bootstrap/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="<?= $base_url ?>public/bootstrap/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="<?= $base_url ?>public/admin/css/admin.css">
+    <!-- <link rel="stylesheet" href="<?= $base_url ?>public/admin/css/admin.css"> -->
+     <link rel="stylesheet" href="/app-blog-guilherme3c/app-blog-main/public/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/app-blog-guilherme3c/app-blog-main/public/admin/css/admin.css">
 </head>
 
 <body>
@@ -53,7 +56,20 @@ include_once $raiz . '/setup/connect.php';
                             <span><i class="fas fa-blog me-2"></i> Blogs</span>
                         </a>
                     </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link d-flex justify-content-between align-items-center"
+                            href="<?= $base_url ?>admin/books/index.php">
+                            <span><i class="fas fa-book me-2"></i> Books</span>
+                        </a>
+                    </li>   
 
+                    <li class="nav-item">
+                        <a class="nav-link d-flex justify-content-between align-items-center"
+                            href="<?= $base_url ?>admin/levels/index.php">
+                            <span><i class="fas fa-level me-2"></i>Levels</span>
+                        </a>
+                    </li>
                    
                 </ul>
             </div>
