@@ -1,48 +1,70 @@
+
 <?php
 session_start();
-// Essa validação é quando acessa a url diretamente: localhost/app-login/logar.php
+
 if (empty($_POST)) {
-    echo "Acesso Restrito";
-    die();
+    die('Acesso Restrito');
 }
+
 include_once '../setup/connect.php';
+
 $post = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-// echo '<pre>';
-// var_dump($post);
-// echo '</pre>';
 
-// echo $post['email'] . '<br>';
-// echo $post['pass'] . '<br>';
-
-if (isset($post['email']) && isset($post['pass'])) { // isset -> Verifica se a variável existe
-    // Tratamento do login e senha trim (remove espaços ante e depois), strtolower(converte para minúsculo)
+if (isset($post['email'], $post['pass'])) {
     $post['email'] = trim(strtolower($post['email']));
     $post['pass'] = trim($post['pass']);
 
-    if (empty($post['email']) || empty($post['pass'])) { // empty -> Verifica se a variável está vazia
+    if (empty($post['email']) || empty($post['pass'])) {
         echo 'Preencha todos os campos!';
-    } else {
-        try {
-            // Criptografar a senha usando password_hash com o algoritmo BCRYPT
-            $post['pass'] = MD5($post['pass']);
-            // Verificação com o Banco de Dados
-            $sth = $pdo->prepare('SELECT * FROM users WHERE email = :email AND pass = :pass');
-            $sth->bindParam(':email', $post['email']);
-            $sth->bindParam(':pass', $post['pass']);
-            $sth->execute();
-            if ($sth->rowCount() > 0) {
-                $_SESSION['email'] = $post['email'];
-                header('Location: home.php');
-            } else {
-                if (isset($_SESSION['email'])) {
-                    unset($_SESSION['email']);
-                }
-                // echo "Usuário ou senha inválidos!";
-                header('Location: index.php?error=true');
-            }
-        } catch (PDOException $e) {
-            echo 'Erro: ' . $e->getMessage();
+        exit;
+    }
+
+    try {
+        $senha = md5($post['pass']);
+
+        $sql = "
+            SELECT id, name, email, id_level_users
+            FROM users
+            WHERE email = :email AND pass = :pass
+            LIMIT 1
+        ";
+
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':email', $post['email']);
+        $sth->bindParam(':pass', $senha);
+        $sth->execute();
+
+        $usuario = $sth->fetch(PDO::FETCH_ASSOC);
+
+        if ($usuario) {
+            session_regenerate_id(true);
+
+            $_SESSION['id'] = $usuario['id'];
+            $_SESSION['name'] = $usuario['name'];
+            $_SESSION['email'] = $usuario['email'];
+            $_SESSION['id_level_users'] =
+                (int) $usuario['id_level_users'];
+
+            header('Location: home.php');
+            exit;
         }
+
+        unset(
+            $_SESSION['id'],
+            $_SESSION['name'],
+            $_SESSION['email'],
+            $_SESSION['id_level_users']
+        );
+
+        header('Location: index.php?error=true');
+        exit;
+
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        http_response_code(500);
+        exit('Ocorreu um erro ao processar o login.');
     }
 }
 
+header('Location: index.php');
+exit;
